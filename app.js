@@ -1,17 +1,21 @@
-// Enternal imports
-const cookieParser = require('cookie-parser');
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const path = require('path');
+// external imports
+const express = require("express");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const loginRouter = require("./router/loginRouter");
+const usersRouter = require("./router/usersRouter");
+const inboxRouter = require("./router/inboxRouter");
 
-// Internal Imports
-const { errorHandler, notFoundHandler } = require('./middlewares/common/errorHandler');
-const loginRouter = require('./router/loginRouter');
-const inboxRouter = require('./router/inboxRouter');
-const usersRouter = require('./router/usersRouter');
+// internal imports
+const {
+  notFoundHandler,
+  errorHandler,
+} = require("./middlewares/common/errorHandler");
 
 const app = express();
+dotenv.config();
 
 // database connection
 mongoose
@@ -19,26 +23,26 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log('Database connected'))
+  .then(() => console.log("database connection successful!"))
   .catch((err) => console.log(err));
 
 // request parsers
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Set view engine
-app.set('view engine', 'ejs');
+// set view engine
+app.set("view engine", "ejs");
 
-// Set Static folder
-app.use(express.static(path.join(__dirname, 'public')));
+// set static folder
+app.use(express.static(path.join(__dirname, "public")));
 
 // parse cookies
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
-// Routing Setup
-app.use('/', loginRouter);
-app.use('/users', usersRouter);
-app.use('/inbox', inboxRouter);
+// routing setup
+app.use("/", loginRouter);
+app.use("/users", usersRouter);
+app.use("/inbox", inboxRouter);
 
 // 404 not found handler
 app.use(notFoundHandler);
@@ -47,5 +51,5 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
-  console.log(`app running on http://localhost:${process.env.PORT}`);
+  console.log(`app listening to port ${process.env.PORT}`);
 });

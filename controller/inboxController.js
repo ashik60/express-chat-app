@@ -1,8 +1,6 @@
-// Get login page
+// get inbox page
 function getInbox(req, res, next) {
-  res.render('inbox', {
-    title: 'Inbox - Chat application',
-  });
+  res.render("inbox");
 }
 
 module.exports = {

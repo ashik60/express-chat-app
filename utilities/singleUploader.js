@@ -1,9 +1,14 @@
 // external imports
-const multer = require('multer');
-const path = require('path');
-const createError = require('http-errors');
+const multer = require("multer");
+const path = require("path");
+const createError = require("http-errors");
 
-function uploader(subfolder_path, allowed_file_types, max_file_size, error_msg) {
+function uploader(
+  subfolder_path,
+  allowed_file_types,
+  max_file_size,
+  error_msg
+) {
   // File upload folder
   const UPLOADS_FOLDER = `${__dirname}/../public/uploads/${subfolder_path}/`;
 
@@ -15,8 +20,12 @@ function uploader(subfolder_path, allowed_file_types, max_file_size, error_msg) 
     filename: (req, file, cb) => {
       const fileExt = path.extname(file.originalname);
       const fileName =
-        file.originalname.replace(fileExt, '').toLowerCase().split(' ').join('-') +
-        '-' +
+        file.originalname
+          .replace(fileExt, "")
+          .toLowerCase()
+          .split(" ")
+          .join("-") +
+        "-" +
         Date.now();
 
       cb(null, fileName + fileExt);
